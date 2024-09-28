@@ -48,6 +48,38 @@ def get_movie_bytitle():
         res = make_response(jsonify(json),200)
     return res
 
+@app.route("/moviesbydirector", methods=['GET'])
+def get_movies_bydirector():
+    json= ""
+    if request.args:
+        director = request.args.get("director")
+        json = [movie for movie in movies if movie["director"].lower() == director.lower()]
+
+        if json:
+            return make_response(jsonify(json), 200)
+        else:
+            return make_response(jsonify({"error": "No movies found for the given director"}), 400)
+    return make_response(jsonify({"error": "Director parameter is required"}), 400)
+
+@app.route("/moviesbyrating", methods=['GET'])
+def get_movies_byrating():
+    json=""
+    if request.args:
+        try:
+            rating = int(request.args.get("rating"))
+            if rating < 0 or rating > 10:
+                return make_response(jsonify({"error": "Rating must be between 0 and 10"}), 400)
+            
+            json = [movie for movie in movies if movie["rating"] >= rating]
+
+            if json:
+                return make_response(jsonify(json), 200)
+            else:
+                return make_response(jsonify({"error": "No movies found with the given rating or higher"}), 400)
+        except ValueError:
+            return make_response(jsonify({"error": "Invalid rating value"}), 400)
+    return make_response(jsonify({"error": "Rating parameter is required"}), 400)
+
 @app.route("/addmovie/<movieid>", methods=['POST'])
 def add_movie(movieid):
     req = request.get_json()
@@ -63,8 +95,9 @@ def add_movie(movieid):
 
 
 def write(movies):
-    with open('{}/databases/movies.json'.format("."), 'w') as f:
-        json.dump(movies, f)
+    data = {"movies": movies}
+    with open('./databases/movies.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
 @app.route("/movies/<movieid>/<rate>", methods=['PUT'])
 def update_movie_rating(movieid, rate):
@@ -87,6 +120,22 @@ def del_movie(movieid):
     res = make_response(jsonify({"error":"movie ID not found"}),400)
     return res
 
+@app.route("/help", methods=['GET'])
+def get_help():
+    endpoints = [
+        {"path": "/", "method": "GET", "description": "Home page of the service"},
+        {"path": "/template", "method": "GET", "description": "HTML template for Movie service"},
+        {"path": "/json", "method": "GET", "description": "Get the full JSON database"},
+        {"path": "/movies/<movieid>", "method": "GET", "description": "Get a movie by its id"},
+        {"path": "/movies/<movieid>", "method": "POST", "description": "Add a movie by its id"},
+        {"path": "/movies/<movieid>", "method": "DELETE", "description": "Delete a movie by its id"},
+        {"path": "/moviesbytitle", "method": "GET", "description": "Get a movie by its title"},
+        {"path": "/moviesbydirector", "method": "GET", "description": "Get movies by director"},
+        {"path": "/moviesbyrating", "method": "GET", "description": "Get movies by rating"},
+        {"path": "/movies/<movieid>/<rate>", "method": "PUT", "description": "Update a movie rate"},
+        {"path": "/help", "method": "GET", "description": "List all available endpoints"},
+    ]
+    return make_response(jsonify({"endpoints": endpoints}), 200)
 
 if __name__ == "__main__":
     #p = sys.argv[1]
