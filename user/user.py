@@ -10,8 +10,6 @@ import grpc
 from concurrent import futures
 import booking_pb2
 import booking_pb2_grpc
-import movie_pb2
-import movie_pb2_grpc
 
 # CALLING GraphQL requests
 
@@ -24,9 +22,9 @@ HOST = '0.0.0.0'
 with open('{}/data/users.json'.format("."), "r") as jsf:
    users = json.load(jsf)["users"]
 
-
-# URLs for the other services
-BOOKING_SERVICE_URL = 'http://localhost:3201'
+def get_booking_stub():
+    channel = grpc.insecure_channel('localhost:3201')
+    return booking_pb2_grpc.BookingStub(channel)
 
 @app.route("/", methods=['GET'])
 def home():
@@ -35,19 +33,30 @@ def home():
 # Get user reservations
 @app.route("/users/<userId>/reservations", methods=['GET'])
 def get_user_reservations(userId):
-   
     user = next((user for user in users if user["id"] == userId), None)
     if not user:
         return make_response(jsonify({"error": "User not found"}), 404)
 
-    booking_url = f"{BOOKING_SERVICE_URL}/bookings/{userId}"
-    bookings_response = requests.get(booking_url)
-    
-    if bookings_response.status_code == 200:
-        return make_response(bookings_response.json(), 200)
-    else:
-        return make_response(jsonify({"error": "Could not retrieve bookings"}), 500)
-  
+    stub = get_booking_stub()
+    try:
+        request = booking_pb2.UserID(userid=userId)
+        response = stub.GetBookingByUserID(request)
+        response_data = {
+            "userId": userId,
+            "dates": [
+                {
+                    "date": date_entry.date,
+                    "movies": list(date_entry.movies)
+                }
+                for date_entry in response.dates
+            ]
+        }
+        
+        print("Response_data!!!!!!!!!",response_data)
+        return make_response(jsonify(response_data), 200)
+    except grpc.RpcError as e:
+        return make_response(jsonify({"error": f"Error contacting Booking service: {e.details()}"}), 500)
+
 # Get user movies   
 @app.route("/users/<userId>/movies", methods=['GET'])
 def get_user_movies(userId):
@@ -97,13 +106,14 @@ def check_availability(userId):
     if 'date' not in req or 'movieid' not in req: # Problème probable avec 'movieid' au lieu de 'id'
         return make_response(jsonify({"error":"Missing 'date' or 'movieid' in request"}), 400)
 
-    booking_url = f"{BOOKING_SERVICE_URL}/bookings/{userId}"
-    availability_check = requests.post(booking_url, json=req)
-
-    if availability_check.status_code == 200:
-        return make_response(availability_check.json(), 200)
-    else:
-        return make_response(availability_check.json(), availability_check.status_code)
+    # Verify the availability
+    stub = get_booking_stub()
+    try:
+        booking_request = booking_pb2.BookingRequest(userid=userId, date=req['date'], movieid=req['movieid'])
+        response = stub.AddBooking(booking_request)
+        return make_response(jsonify({"message": response.message, "error": response.error}), 200)
+    except grpc.RpcError as e:
+        return make_response(jsonify({"error": f"Error contacting Booking service: {e.details()}"}), 500)
 
 # Update user info
 @app.route("/users/<userId>", methods=['PUT'])

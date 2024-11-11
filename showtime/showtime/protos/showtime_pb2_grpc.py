@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import showtime_pb2 as showtime__pb2
+from showtime.protos import showtime_pb2 as showtime_dot_protos_dot_showtime__pb2
 
 GRPC_GENERATED_VERSION = '1.66.1'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in showtime_pb2_grpc.py depends on'
+        + f' but the generated code in showtime/protos/showtime_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -36,13 +36,13 @@ class ShowtimeStub(object):
         """
         self.GetShowtimes = channel.unary_stream(
                 '/Showtime/GetShowtimes',
-                request_serializer=showtime__pb2.Empty.SerializeToString,
-                response_deserializer=showtime__pb2.ShowtimeData.FromString,
+                request_serializer=showtime_dot_protos_dot_showtime__pb2.Empty.SerializeToString,
+                response_deserializer=showtime_dot_protos_dot_showtime__pb2.ShowtimeData.FromString,
                 _registered_method=True)
         self.GetShowtimesByDate = channel.unary_unary(
                 '/Showtime/GetShowtimesByDate',
-                request_serializer=showtime__pb2.DateRequest.SerializeToString,
-                response_deserializer=showtime__pb2.ShowtimeData.FromString,
+                request_serializer=showtime_dot_protos_dot_showtime__pb2.DateRequest.SerializeToString,
+                response_deserializer=showtime_dot_protos_dot_showtime__pb2.ShowtimeData.FromString,
                 _registered_method=True)
 
 
@@ -66,13 +66,13 @@ def add_ShowtimeServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'GetShowtimes': grpc.unary_stream_rpc_method_handler(
                     servicer.GetShowtimes,
-                    request_deserializer=showtime__pb2.Empty.FromString,
-                    response_serializer=showtime__pb2.ShowtimeData.SerializeToString,
+                    request_deserializer=showtime_dot_protos_dot_showtime__pb2.Empty.FromString,
+                    response_serializer=showtime_dot_protos_dot_showtime__pb2.ShowtimeData.SerializeToString,
             ),
             'GetShowtimesByDate': grpc.unary_unary_rpc_method_handler(
                     servicer.GetShowtimesByDate,
-                    request_deserializer=showtime__pb2.DateRequest.FromString,
-                    response_serializer=showtime__pb2.ShowtimeData.SerializeToString,
+                    request_deserializer=showtime_dot_protos_dot_showtime__pb2.DateRequest.FromString,
+                    response_serializer=showtime_dot_protos_dot_showtime__pb2.ShowtimeData.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -100,8 +100,8 @@ class Showtime(object):
             request,
             target,
             '/Showtime/GetShowtimes',
-            showtime__pb2.Empty.SerializeToString,
-            showtime__pb2.ShowtimeData.FromString,
+            showtime_dot_protos_dot_showtime__pb2.Empty.SerializeToString,
+            showtime_dot_protos_dot_showtime__pb2.ShowtimeData.FromString,
             options,
             channel_credentials,
             insecure,
@@ -127,8 +127,8 @@ class Showtime(object):
             request,
             target,
             '/Showtime/GetShowtimesByDate',
-            showtime__pb2.DateRequest.SerializeToString,
-            showtime__pb2.ShowtimeData.FromString,
+            showtime_dot_protos_dot_showtime__pb2.DateRequest.SerializeToString,
+            showtime_dot_protos_dot_showtime__pb2.ShowtimeData.FromString,
             options,
             channel_credentials,
             insecure,
