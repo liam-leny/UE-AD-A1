@@ -10,7 +10,7 @@ import json
 class BookingServicer(booking_pb2_grpc.BookingServicer):
 
     def __init__(self):
-        with open("{}/data/bookings.json".format("."), "r") as jsf:
+        with open("{}/booking/data/bookings.json".format("."), "r") as jsf:
             self.db = json.load(jsf)["bookings"]
 
     def GetBookingByUserID(self, request, context):

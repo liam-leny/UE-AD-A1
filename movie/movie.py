@@ -14,7 +14,7 @@ PORT = 3001
 HOST = "0.0.0.0"
 app = Flask(__name__)
 
-type_defs = load_schema_from_path("movie.graphql")
+type_defs = load_schema_from_path("movie/movie.graphql")
 movie = ObjectType("Movie")
 
 query = QueryType()

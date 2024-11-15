@@ -19,7 +19,7 @@ app = Flask(__name__)
 PORT = 3004
 HOST = "0.0.0.0"
 
-with open("{}/data/users.json".format("."), "r") as jsf:
+with open("{}/user/data/users.json".format("."), "r") as jsf:
     users = json.load(jsf)["users"]
 
 
