@@ -17,7 +17,7 @@
 
 ## Description
 
-The **TP MIXTE - UE Distributed Architectures** project is a distributed application consisting of several services for managing movies, showtimes, bookings, and users in a cinema. This application uses mixed APIs, including **GraphQL** for some services and **REST** for the **User** service API, while the other services communicate via **gRPC**.
+The **TP MIXTE - UE Architectures distribuées A1** project is a distributed application consisting of several services for managing movies, showtimes, bookings, and users in a cinema. This application uses mixed APIs, including **GraphQL** for some services and **REST** for the **User** service API, while the other services communicate via **gRPC**.
 
 ## Project Goal
 
