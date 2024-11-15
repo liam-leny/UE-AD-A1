@@ -125,6 +125,15 @@ Here is the directory structure of the project:
     └── pyvenv.cfg
 ```
 
+## Launching All Services
+
+To launch all services simultaneously, you can use the `start_services.sh` script located at the root of the project. Run the following command at the root of the project:
+
+```bash
+./start_services.sh
+```
+
+This command will start all the services in the background, running them simultaneously so that the application functions correctly.
 
 ## Authors
 
