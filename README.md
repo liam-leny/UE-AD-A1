@@ -12,6 +12,7 @@
 - [Overall Functionality](#overall-functionality)
 - [Architecture](#architecture)
 - [Project Directory Structure](#project-directory-structure)
+- [Features](#features)
 - [Launching All Services](#launching-all-services)
 - [Authors](#authors)
 
@@ -124,6 +125,50 @@ Here is the directory structure of the project:
     ├── lib
     └── pyvenv.cfg
 ```
+
+## Features
+
+- **User**
+
+| Method  | Description                                                                     | URL                                   |
+|---------|---------------------------------------------------------------------------------|------------------------------------------------|
+| GET     | Home page. Displays a welcome message.                                          | http://localhost:3203/                         |
+| GET     | Retrieve all reservations for a specific user by their `userId`.               | http://localhost:3203/users/{userId}/reservations |
+| GET     | Retrieve all movies associated with a user's reservations.                     | http://localhost:3203/users/{userId}/movies    |
+| POST    | Check the availability of a reservation for a specific date and movie.         | http://localhost:3203/users/{userId}/reservations/availability |
+| PUT     | Update a specific user's information by their `userId`.                        | http://localhost:3203/users/{userId}           |
+| DELETE  | Delete a specific user by their `userId`.                                       | http://localhost:3203/users/{userId}           |
+
+- **Movie**
+
+| Method   | Description                                                               | URL / Method                          |
+|----------|---------------------------------------------------------------------------|---------------------------------------|
+| GET      | Home page. Displays a welcome message.                                    | http://localhost:3200/                |
+| GET      | Serves an HTML template for the Movie service.                            | http://localhost:3200/template        |
+| GraphQL  | Retrieve all movies.                                                     | Query: `all_movies`                   |
+| GraphQL  | Retrieve a movie by its ID.                                              | Query: `movie_with_id`                |
+| GraphQL  | Retrieve a movie by its title.                                           | Query: `movie_with_title`             |
+| GraphQL  | Retrieve movies directed by a specific director.                         | Query: `movie_with_director`          |
+| GraphQL  | Retrieve movies with a specific rating.                                  | Query: `movie_with_rating`            |
+| GraphQL  | Update the rating of a movie.                                            | Mutation: `update_movie_rate`         |
+| GraphQL  | Add a new movie.                                                         | Mutation: `add_movie`                 |
+| GraphQL  | Delete a movie.                                                          | Mutation: `delete_movie`              |
+| GraphQL  | Retrieve the list of actors in a movie.                                  | Field Resolver: `actors` within `Movie`|
+
+- **Showtime**
+
+| Method | Description                                                                | Method                                |
+|--------|----------------------------------------------------------------------------|---------------------------------------|
+| gRPC   | Retrieve all showtimes available in the schedule.                          | `/Showtime/GetShowtimes`              |
+| gRPC   | Retrieve showtimes for a specific date. Returns NOT_FOUND if the date is unavailable. | `/Showtime/GetShowtimesByDate`       |
+
+- **Booking**
+
+| Method | Description                                                                                     | Method                               |
+|--------|-------------------------------------------------------------------------------------------------|--------------------------------------|
+| gRPC   | Retrieve booking details by user ID. Returns NOT_FOUND if the user ID is unavailable.           | `/Booking/GetBookingByUserID`        |
+| gRPC   | Add a new booking for a user. Checks movie availability via the Showtime service before adding. | `/Booking/AddBooking`                |
+| gRPC   | Retrieve all bookings in the database.                                                          | `/Booking/GetAllBookings`            |
 
 ## Launching All Services
 
