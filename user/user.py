@@ -16,7 +16,7 @@ import booking_pb2_grpc
 
 app = Flask(__name__)
 
-PORT = 3004
+PORT = 3203
 HOST = "0.0.0.0"
 
 with open("{}/user/data/users.json".format("."), "r") as jsf:
@@ -104,7 +104,7 @@ def get_user_movies(userId):
             """
             )
             movie_response = requests.post(
-                "http://127.0.0.1:3001/graphql", json={"query": query}
+                "http://127.0.0.1:3200/graphql", json={"query": query}
             )
             if movie_response.status_code == 200:
                 movie_details.append(movie_response.json())

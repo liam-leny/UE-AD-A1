@@ -32,7 +32,7 @@ class BookingServicer(booking_pb2_grpc.BookingServicer):
         and if available, adds the booking to the database.
         """
         # Connection to the Showtime service to verify the availability
-        with grpc.insecure_channel("localhost:3002") as channel:
+        with grpc.insecure_channel("localhost:3202") as channel:
             showtime_stub = showtime_pb2_grpc.ShowtimeStub(channel)
             try:
                 # Call GetShowtimesByDate to get the movies available on the requested date
