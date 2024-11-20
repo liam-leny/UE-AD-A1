@@ -104,7 +104,7 @@ class BookingServicer(booking_pb2_grpc.BookingServicer):
         """
         Helper method to save the updated bookings data back to the JSON file.
         """
-        with open("./data/bookings.json", "w") as f:
+        with open("./booking/data/bookings.json", "w") as f:
             json.dump({"bookings": self.db}, f, indent=2)
 
 

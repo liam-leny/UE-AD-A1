@@ -127,9 +127,7 @@ def check_availability(userId):
         return make_response(jsonify({"error": "User not found"}), 404)
 
     req = request.get_json()
-    if (
-        "date" not in req or "movieid" not in req
-    ):  # Problème probable avec 'movieid' au lieu de 'id'
+    if "date" not in req or "movieid" not in req:
         return make_response(
             jsonify({"error": "Missing 'date' or 'movieid' in request"}), 400
         )
