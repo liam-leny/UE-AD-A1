@@ -1,20 +1,20 @@
 #!/bin/bash
 
-# Lancer le service GraphQL
-echo "Lancement du service GraphQL movie..."
+# Start the GraphQL service
+echo "Starting the GraphQL movie service..."
 python3 movie/movie.py &
 
-# Lancer le service REST
-echo "Lancement du service REST user..."
+# Start the REST service
+echo "Starting the REST user service..."
 python3 user/user.py &
 
-# Lancer le premier service gRPC (movie)
-echo "Lancement du service gRPC movie..."
-python3 movie/movie.py &
+# Start the first gRPC service (booking)
+echo "Starting the gRPC booking service..."
+python3 booking/booking.py &
 
-# Lancer le second service gRPC (showtime)
-echo "Lancement du service gRPC showtime..."
+# Start the second gRPC service (showtime)
+echo "Starting the gRPC showtime service..."
 python3 showtime/showtime.py &
 
-# Attendre que tous les services se terminent (facultatif)
 wait
+
