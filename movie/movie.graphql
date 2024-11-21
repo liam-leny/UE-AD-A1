@@ -1,4 +1,5 @@
 type Query {
+  home: String!
   all_movies: [Movie!]!
   movie_with_id(_id: String!): Movie
   movie_with_title(_title: String!): [Movie]
