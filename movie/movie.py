@@ -8,11 +8,9 @@ app = Flask(__name__)
 PORT = 3200
 HOST = "0.0.0.0"
 
-with open("{}/databases/movies.json".format("."), "r") as jsf:
+with open("{}/movie/databases/movies.json".format("."), "r") as jsf:
     movies = json.load(jsf)["movies"]
 
-with open('{}/movie/databases/movies.json'.format("."), 'r') as jsf:
-   movies = json.load(jsf)["movies"]
 
 # root message
 @app.route("/", methods=["GET"])
@@ -159,7 +157,7 @@ def write(movies):
     Helper function to write the updated movies list to the JSON file.
     """
     data = {"movies": movies}
-    with open('./movie/databases/movies.json', 'w') as f:
+    with open("./movie/databases/movies.json", "w") as f:
         json.dump(data, f, indent=4)
 
 
@@ -255,4 +253,4 @@ def get_help():
 if __name__ == "__main__":
     # p = sys.argv[1]
     print("Server running in port %s" % (PORT))
-    app.run(host=HOST, port=PORT, debug=True)
+    app.run(host=HOST, port=PORT)

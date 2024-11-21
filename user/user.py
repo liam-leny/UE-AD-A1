@@ -7,7 +7,7 @@ app = Flask(__name__)
 PORT = 3203
 HOST = "0.0.0.0"
 
-with open('{}/user/databases/users.json'.format("."), "r") as jsf:
+with open("{}/user/databases/users.json".format("."), "r") as jsf:
     users = json.load(jsf)["users"]
 
 # URLs for the other services
@@ -72,33 +72,6 @@ def get_user_movies(userId):
         return make_response(jsonify({"userId": userId, "movies": movie_details}), 200)
     else:
         return make_response(jsonify({"error": "No movies found"}), 404)
-
-
-# Check reservation availability
-@app.route("/users/<userId>/reservations/availability", methods=["POST"])
-def check_availability(userId):
-    """
-    Route to check the availability of a reservation for a specific user.
-    Validates the user's existence and checks if the 'date' and 'movieid' are provided in the request body.
-    Forwards the availability request to the Booking service and returns the response.
-    """
-    user = next((user for user in users if user["id"] == userId), None)
-    if not user:
-        return make_response(jsonify({"error": "User not found"}), 404)
-
-    req = request.get_json()
-    if "date" not in req or "movieid" not in req:
-        return make_response(
-            jsonify({"error": "Missing 'date' or 'movieid' in request"}), 400
-        )
-
-    booking_url = f"{BOOKING_SERVICE_URL}/bookings/{userId}"
-    availability_check = requests.post(booking_url, json=req)
-
-    if availability_check.status_code == 200:
-        return make_response(availability_check.json(), 200)
-    else:
-        return make_response(availability_check.json(), availability_check.status_code)
 
 
 # Update user info
