@@ -8,7 +8,7 @@ app = Flask(__name__)
 PORT = 3201
 HOST = '0.0.0.0'
 
-with open('{}/databases/bookings.json'.format("."), "r") as jsf:
+with open('{}/booking/databases/bookings.json'.format("."), "r") as jsf:
    bookings = json.load(jsf)["bookings"]
 
 @app.route("/", methods=['GET'])
@@ -84,7 +84,7 @@ def add_booking(userid):
 
 def write(bookings):
     data = {"bookings": bookings}
-    with open('./databases/bookings.json', 'w') as f:
+    with open('./booking/databases/bookings.json', 'w') as f:
         json.dump(data, f, indent=2)
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ app = Flask(__name__)
 PORT = 3200
 HOST = '0.0.0.0'
 
-with open('{}/databases/movies.json'.format("."), 'r') as jsf:
+with open('{}/movie/databases/movies.json'.format("."), 'r') as jsf:
    movies = json.load(jsf)["movies"]
 
 # root message
@@ -96,7 +96,7 @@ def add_movie(movieid):
 
 def write(movies):
     data = {"movies": movies}
-    with open('./databases/movies.json', 'w') as f:
+    with open('./movie/databases/movies.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 @app.route("/movies/<movieid>/<rate>", methods=['PUT'])

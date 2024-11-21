@@ -7,7 +7,7 @@ app = Flask(__name__)
 PORT = 3203
 HOST = '0.0.0.0'
 
-with open('{}/databases/users.json'.format("."), "r") as jsf:
+with open('{}/user/databases/users.json'.format("."), "r") as jsf:
     users = json.load(jsf)["users"]
 
 # URLs for the other services
